@@ -160,8 +160,8 @@ header h1 {
   opacity: 0.65;
 }
 
-input[type="button"]:disabled {
-  opacity: 0.65;
+.pagination-container button:disabled {
+  opacity: 0.5;
 }
 
 @keyframes fade-in {

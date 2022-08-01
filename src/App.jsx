@@ -36,6 +36,14 @@ const App = () => {
     setColour(colourText);
   };
 
+  const isDisabled = () => {
+    if (pageNumber === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const changePageNumber = (e) => {
     console.log(e.target);
     const changeText = e.target.textContent;
@@ -73,10 +81,18 @@ const App = () => {
           })}
         </div>
         <div className="pagination-container">
-          <button disabled={true} onClick={changePageNumber}>
+          <button
+            disabled={pageNumber <= 1 ? true : false}
+            onClick={changePageNumber}
+          >
             Prev
           </button>
-          <button onClick={changePageNumber}>Next</button>
+          <button
+            disabled={pageNumber <= 100 ? false : true}
+            onClick={changePageNumber}
+          >
+            Next
+          </button>
         </div>
       </div>
     </>
