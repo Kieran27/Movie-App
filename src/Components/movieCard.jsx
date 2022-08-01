@@ -2,7 +2,7 @@ import React from "react";
 
 const MovieCard = ({ movie }) => {
   return (
-    <div className="movie">
+    <div className="movie" key={movie.imdbID}>
       <img src={movie.Poster ? movie.Poster : "not found"} alt="" />
       <div className="movie-info">
         <p>{movie.Title}</p>

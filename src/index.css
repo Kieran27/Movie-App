@@ -77,10 +77,18 @@ header h1 {
   opacity: 0.65;
 }
 
-.movies-container {
+.movies-container-old {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-top: 3rem;
+  gap: 2rem;
+}
+
+.movies-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin-top: 3rem;
   gap: 2rem;
 }
@@ -92,7 +100,8 @@ header h1 {
 }
 
 .movie img {
-  max-width: 100%;
+  width: 300px;
+  height: 440px;
   margin-bottom: 0.5rem;
 }
 
@@ -111,4 +120,24 @@ header h1 {
 .movie-info p {
   margin: 0;
   font-weight: bold;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pagination-container button {
+  background: none;
+  border: none;
+  color: white;
+  background: black;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  border-radius: 15px;
+  transition: opacity 0.2s;
+  font-weight: bold;
+  cursor: pointer;
 }
