@@ -8,8 +8,8 @@ const MovieCard = ({ movie }) => {
         <p>{movie.Title}</p>
       </div>
       <div className="movie-info-metadata">
-        <p>Movie Release</p>
-        <p>IMDB ID</p>
+        <p>{movie.Year}</p>
+        <p>{movie.Type}</p>
       </div>
     </div>
   );

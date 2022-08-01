@@ -109,6 +109,8 @@ header h1 {
   display: flex;
   flex-direction: column;
   max-width: 500px;
+  transition: 0.2s;
+  animation: fade-in 1s;
 }
 
 .movie img {
@@ -152,4 +154,24 @@ header h1 {
   transition: opacity 0.2s;
   font-weight: bold;
   cursor: pointer;
+}
+
+.pagination-container button:hover {
+  opacity: 0.65;
+}
+
+input[type="button"]:disabled {
+  opacity: 0.65;
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

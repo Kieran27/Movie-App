@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import Header from "./Components/header.jsx";
 import MovieCard from "./Components/movieCard.jsx";
 import ColourButton from "./Components/colourButton.jsx";
-import { isDisabled } from "@testing-library/user-event/dist/utils/index.js";
 
 const App = () => {
   const coloursArray = ["Blue", "Red", "Yellow", "Green"];
@@ -29,9 +28,8 @@ const App = () => {
   }, [colour, pageNumber]);
 
   useEffect(() => {
-    console.log(movieData);
-    console.log(colour);
-  }, [movieData, colour]);
+    setPageNumber(1);
+  }, [colour]);
 
   const handleClick = (e) => {
     const colourText = e.target.textContent.toLowerCase();
@@ -56,9 +54,9 @@ const App = () => {
 
   return (
     <>
+      <div ref={dummyRef}></div>
       <Header />
       <div className="wrapper">
-        <div ref={dummyRef}></div>
         <div className="colour-select-container">
           {coloursArray.map((colour) => {
             return <ColourButton colour={colour} handleClick={handleClick} />;
@@ -75,7 +73,9 @@ const App = () => {
           })}
         </div>
         <div className="pagination-container">
-          <button onClick={changePageNumber}>Prev</button>
+          <button disabled={true} onClick={changePageNumber}>
+            Prev
+          </button>
           <button onClick={changePageNumber}>Next</button>
         </div>
       </div>
