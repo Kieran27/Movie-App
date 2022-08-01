@@ -1,14 +1,45 @@
 import { useState, useEffect } from "react";
 import Header from "./Components/header.jsx";
+import MovieCard from "./Components/movieCard.jsx";
 
 const App = () => {
+  const [movieData, setMovieData] = useState(null);
+  const [colour, setColour] = useState("red");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const baseURL =
+    "http://www.omdbapi.com/?s=red&type=movie&page=1&apikey=5b2a9bfb";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (colour) {
+        setLoading(true);
+        const movies = await fetch(
+          `http://www.omdbapi.com/?s=${colour}&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+        );
+        const data = await movies.json();
+        setMovieData(data.Search);
+      }
+    };
+    fetchData();
+  }, [colour, pageNumber]);
+
+  useEffect(() => {
+    console.log(movieData);
+  }, [movieData]);
+
+  const handleClick = (e) => {
+    const colourText = e.target.textContent.toLowerCase();
+    setColour(colourText);
+  };
+
   return (
     <>
       <Header />
       <div className="wrapper">
         <div className="colour-select-container">
           <div className="colour-container">
-            <button>Blue</button>
+            <button onClick={handleClick}>Blue</button>
           </div>
           <div className="colour-container">
             <button>Red</button>
@@ -22,19 +53,10 @@ const App = () => {
         </div>
 
         <div className="movies-container">
-          <div className="movie">
-            <img
-              src="https://m.media-amazon.com/images/M/MV5BNTAyOGRjOWMtMWIxYi00NDkyLTlmYjEtYmRmNzQyODc4ZWQ5XkEyXkFqcGdeQXVyNzExNzIwMw@@._V1_SX300.jpg"
-              alt=""
-            />
-            <div className="movie-info">
-              <p>Movie Title</p>
-            </div>
-            <div className="movie-info-metadata">
-              <p>Movie Release</p>
-              <p>IMDB ID</p>
-            </div>
-          </div>
+          {loading ? "Loading" : "hello"}
+          {movieData?.map((movie) => {
+            return <MovieCard movie={movie} />;
+          })}
         </div>
       </div>
     </>
