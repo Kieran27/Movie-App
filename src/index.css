@@ -27,6 +27,10 @@ header {
   color: white;
 }
 
+h2 {
+  margin: 0;
+}
+
 header h1 {
   margin: 0;
 }
@@ -81,15 +85,23 @@ header h1 {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-top: 3rem;
+  margin-top: 1rem;
   gap: 2rem;
+}
+
+.movies-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 .movies-container {
   display: grid;
   place-items: center;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin-top: 3rem;
+  margin-top: 2rem;
   gap: 2rem;
 }
 
