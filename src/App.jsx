@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Header from "./Components/header.jsx";
 import MovieCard from "./Components/movieCard.jsx";
 import ColourButton from "./Components/colourButton.jsx";
+import Loading from "./Components/loading.jsx";
 
 const App = () => {
   const coloursArray = ["Blue", "Red", "Yellow", "Green"];
@@ -16,12 +17,13 @@ const App = () => {
     const fetchData = async () => {
       if (colour === "all") return handleAll();
       else if (colour) {
-        setLoading(true);
+        setLoading((loading) => !loading);
         const movies = await fetch(
           `http://www.omdbapi.com/?s=${colour}&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
         );
         const data = await movies.json();
         setMovieData(data.Search);
+        setLoading((loading) => !loading);
       }
     };
     fetchData();
@@ -33,7 +35,9 @@ const App = () => {
   }, [colour]);
 
   const handleAll = async (e) => {
+    // If all selected, fetch movies of each colour and turn res to json format
     setColour("all");
+    setLoading((loading) => !loading);
     const red = await fetch(
       `http://www.omdbapi.com/?s=red&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
     );
@@ -51,11 +55,13 @@ const App = () => {
     );
     const yellowData = await yellow.json();
 
+    // Concat individual arrays into combined array - detailing 40 movies
     const combinedData = redData.Search.concat(blueData.Search)
       .concat(greenData.Search)
       .concat(yellowData.Search);
 
     setMovieData(combinedData);
+    setLoading((loading) => !loading);
   };
 
   const handleClick = (e) => {
@@ -84,36 +90,46 @@ const App = () => {
       <div ref={dummyRef}></div>
       <Header />
       <div className="wrapper">
-        <div className="colour-select-container">
-          {coloursArray.map((colour) => {
-            return <ColourButton colour={colour} handleClick={handleClick} />;
-          })}
-        </div>
-        <button onClick={handleAll}>ALL</button>
-        <div className="movies-header">
-          <h2>Movies</h2>
-          <span style={{ color: { colour } }}>Colour: {colour}</span>
-          <span>Page: {pageNumber}</span>
-        </div>
-        <div className="movies-container">
-          {movieData?.map((movie) => {
-            return <MovieCard movie={movie} />;
-          })}
-        </div>
-        <div className="pagination-container">
-          <button
-            disabled={pageNumber <= 1 ? true : false}
-            onClick={changePageNumber}
-          >
-            Prev
-          </button>
-          <button
-            disabled={pageNumber <= 100 ? false : true}
-            onClick={changePageNumber}
-          >
-            Next
-          </button>
-        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="colour-select-container">
+              {coloursArray.map((colour) => {
+                return (
+                  <ColourButton colour={colour} handleClick={handleClick} />
+                );
+              })}
+              <div className="colour-container">
+                <button onClick={handleAll}>All</button>
+              </div>
+            </div>
+            <div className="movies-header">
+              <h2>Movies</h2>
+              <span style={{ color: { colour } }}>Colour: {colour}</span>
+              <span>Page: {pageNumber}</span>
+            </div>
+            <div className="movies-container">
+              {movieData?.map((movie) => {
+                return <MovieCard movie={movie} />;
+              })}
+            </div>
+            <div className="pagination-container">
+              <button
+                disabled={pageNumber <= 1 ? true : false}
+                onClick={changePageNumber}
+              >
+                Prev
+              </button>
+              <button
+                disabled={pageNumber <= 100 ? false : true}
+                onClick={changePageNumber}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
