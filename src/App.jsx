@@ -14,7 +14,8 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (colour) {
+      if (colour === "all") return handleAll();
+      else if (colour) {
         setLoading(true);
         const movies = await fetch(
           `http://www.omdbapi.com/?s=${colour}&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
@@ -31,17 +32,35 @@ const App = () => {
     setPageNumber(1);
   }, [colour]);
 
+  const handleAll = async (e) => {
+    setColour("all");
+    const red = await fetch(
+      `http://www.omdbapi.com/?s=red&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+    );
+    const redData = await red.json();
+    const blue = await fetch(
+      `http://www.omdbapi.com/?s=blue&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+    );
+    const blueData = await blue.json();
+    const green = await fetch(
+      `http://www.omdbapi.com/?s=green&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+    );
+    const greenData = await green.json();
+    const yellow = await fetch(
+      `http://www.omdbapi.com/?s=yellow&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+    );
+    const yellowData = await yellow.json();
+
+    const combinedData = redData.Search.concat(blueData.Search)
+      .concat(greenData.Search)
+      .concat(yellowData.Search);
+
+    setMovieData(combinedData);
+  };
+
   const handleClick = (e) => {
     const colourText = e.target.textContent.toLowerCase();
     setColour(colourText);
-  };
-
-  const isDisabled = () => {
-    if (pageNumber === 1) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   const changePageNumber = (e) => {
@@ -70,9 +89,10 @@ const App = () => {
             return <ColourButton colour={colour} handleClick={handleClick} />;
           })}
         </div>
+        <button onClick={handleAll}>ALL</button>
         <div className="movies-header">
           <h2>Movies</h2>
-          <span>Colour: {colour}</span>
+          <span style={{ color: { colour } }}>Colour: {colour}</span>
           <span>Page: {pageNumber}</span>
         </div>
         <div className="movies-container">
