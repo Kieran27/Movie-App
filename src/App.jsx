@@ -19,7 +19,7 @@ const App = () => {
       else if (colour) {
         setLoading((loading) => !loading);
         const movies = await fetch(
-          `http://www.omdbapi.com/?s=${colour}&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+          `https://www.omdbapi.com/?s=${colour}&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
         );
         const data = await movies.json();
         setMovieData(data.Search);
@@ -39,19 +39,19 @@ const App = () => {
     setColour("all");
     setLoading((loading) => !loading);
     const red = await fetch(
-      `http://www.omdbapi.com/?s=red&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+      `https://www.omdbapi.com/?s=red&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
     );
     const redData = await red.json();
     const blue = await fetch(
-      `http://www.omdbapi.com/?s=blue&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+      `https://www.omdbapi.com/?s=blue&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
     );
     const blueData = await blue.json();
     const green = await fetch(
-      `http://www.omdbapi.com/?s=green&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+      `https://www.omdbapi.com/?s=green&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
     );
     const greenData = await green.json();
     const yellow = await fetch(
-      `http://www.omdbapi.com/?s=yellow&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
+      `https://www.omdbapi.com/?s=yellow&type=movie&page=${pageNumber}&apikey=5b2a9bfb`
     );
     const yellowData = await yellow.json();
 
@@ -90,25 +90,23 @@ const App = () => {
       <div ref={dummyRef}></div>
       <Header />
       <div className="wrapper">
+        <div className="colour-select-container">
+          {coloursArray.map((colour) => {
+            return <ColourButton colour={colour} handleClick={handleClick} />;
+          })}
+          <div className="colour-container">
+            <button onClick={handleAll}>All</button>
+          </div>
+        </div>
+        <div className="movies-header">
+          <h2>Movies</h2>
+          <span style={{ color: { colour } }}>Colour: {colour}</span>
+          <span>Page: {pageNumber}</span>
+        </div>
         {loading ? (
           <Loading />
         ) : (
           <>
-            <div className="colour-select-container">
-              {coloursArray.map((colour) => {
-                return (
-                  <ColourButton colour={colour} handleClick={handleClick} />
-                );
-              })}
-              <div className="colour-container">
-                <button onClick={handleAll}>All</button>
-              </div>
-            </div>
-            <div className="movies-header">
-              <h2>Movies</h2>
-              <span style={{ color: { colour } }}>Colour: {colour}</span>
-              <span>Page: {pageNumber}</span>
-            </div>
             <div className="movies-container">
               {movieData?.map((movie) => {
                 return <MovieCard movie={movie} />;
