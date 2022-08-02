@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Header from "./Components/header.jsx";
 import MovieCard from "./Components/movieCard.jsx";
 import ColourButton from "./Components/colourButton.jsx";
@@ -70,7 +71,6 @@ const App = () => {
   };
 
   const changePageNumber = (e) => {
-    console.log(e.target);
     const changeText = e.target.textContent;
     if (changeText === "Next") {
       setPageNumber((pageNumber) => pageNumber + 1);
@@ -92,7 +92,13 @@ const App = () => {
       <div className="wrapper">
         <div className="colour-select-container">
           {coloursArray.map((colour) => {
-            return <ColourButton colour={colour} handleClick={handleClick} />;
+            return (
+              <ColourButton
+                colour={colour}
+                handleClick={handleClick}
+                key={uuidv4()}
+              />
+            );
           })}
           <div className="colour-container">
             <button onClick={handleAll}>All</button>
@@ -109,7 +115,7 @@ const App = () => {
           <>
             <div className="movies-container">
               {movieData?.map((movie) => {
-                return <MovieCard movie={movie} />;
+                return <MovieCard movie={movie} key={uuidv4()} />;
               })}
             </div>
             <div className="pagination-container">
